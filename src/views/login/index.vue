@@ -41,7 +41,9 @@
         <a-form ref="signUpRef" :model="signUpForm" :rules="signUpRules" class="sign-up-form">
           <h2 class="title">注册</h2>
           <div class="input-field">
-            <i class="fa-solid fa-user"></i>
+            <i>
+              <font-awesome-icon icon="fa-solid fa-user"></font-awesome-icon>
+            </i>
             <a-form-item name="username">
               <a-input
                 v-model:value="signUpForm.username"
@@ -58,7 +60,9 @@
             </a-form-item>
           </div> -->
           <div class="input-field">
-            <i class="fa-solid fa-lock"></i>
+            <i>
+              <font-awesome-icon icon="fa-solid fa-lock"></font-awesome-icon>
+            </i>
             <a-form-item name="password">
               <a-input-password
                 :bordered="false"
@@ -70,7 +74,9 @@
             </a-form-item>
           </div>
           <div class="input-field">
-            <i class="fa-solid fa-lock"></i>
+            <i>
+              <font-awesome-icon icon="fa-solid fa-lock"></font-awesome-icon>
+            </i>
             <a-form-item name="confirmPassword">
               <a-input-password
                 :bordered="false"
