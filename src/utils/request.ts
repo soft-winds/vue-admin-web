@@ -1,11 +1,14 @@
+import { useUserStore } from '@/stores/user'
+import { message } from 'ant-design-vue'
 import axios from 'axios'
 
 const request = axios.create({
-  baseURL: '/'
+  baseURL: import.meta.env.VITE_APP_BASE_API
 })
-
 request.interceptors.request.use(
   (config) => {
+    const { user_token } = useUserStore()
+    config.headers.Authorization = user_token
     return config
   },
   (error) => {
@@ -19,6 +22,10 @@ request.interceptors.response.use(
     return data
   },
   (error) => {
+    message.error(error.response.data.message)
+    if (error.response.status === 401) {
+      useUserStore().removeUserInfo()
+    }
     return Promise.reject(error)
   }
 )

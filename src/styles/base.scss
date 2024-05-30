@@ -7,3 +7,9 @@ select:-webkit-autofill {
   background-image: none;
   transition: background-color 50000s ease-in-out 0s;
 }
+
+#app,
+body {
+  height: 100%;
+  overflow: hidden;
+}

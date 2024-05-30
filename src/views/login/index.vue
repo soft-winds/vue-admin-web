@@ -122,12 +122,18 @@
 </template>
 
 <script setup lang="ts">
+import { signin, signup } from '@/api/user'
+import { useUserStore } from '@/stores/user'
+import { message } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import { onBeforeMount, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 interface LoginForm {
   username: string
   password: string
 }
+const userStore = useUserStore()
 const loginLoading = ref(false)
 const signUploading = ref(false)
 
@@ -141,7 +147,6 @@ const loginForm = ref<LoginForm>({
 
 const signUpForm = ref({
   username: '',
-  phone: '',
   password: '',
   confirmPassword: ''
 })
@@ -171,15 +176,7 @@ const signUpRules: Record<string, Rule[]> = {
       trigger: 'blur'
     }
   ],
-  //   phone: [
-  //     {
-  //       required: true,
-  //       pattern: /^1[3-9]\d{9}$/,
-  //       message: '请输入11位手机号',
-  //       type: 'string',
-  //       trigger: 'blur'
-  //     }
-  //   ],
+
   password: [
     {
       required: true,
@@ -220,31 +217,27 @@ onMounted(() => {
   })
 })
 
-const Login = () => {
-  loginRef.value?.validate((valid: boolean) => {
-    if (valid) {
-      loginLoading.value = true
-      // TODO: axios 登录请求
-      setTimeout(() => {
-        // ElMessage.success('登录成功')
-        loginLoading.value = false
-      }, 500)
-    }
-  })
+const Login = async () => {
+  try {
+    await loginRef.value?.validate()
+    loginLoading.value = true
+    const data: any = await signin(loginForm.value)
+    userStore.setUserInfo(data)
+    message.success('登录成功')
+    router.push('/')
+  } catch (error) {}
+  loginLoading.value = false
 }
 
-const SignUp = () => {
-  signUpRef.value.validate((valid: string) => {
-    if (valid) {
-      signUploading.value = true
-      // TODO: axios 注册请求
-      setTimeout(() => {
-        // ElMessage.success('注册成功')
-        signUpRef.value.resetFields()
-        document.getElementById('sign-in-btn')?.click()
-      }, 500)
-    }
-  })
+const SignUp = async () => {
+  try {
+    await signUpRef.value.validate()
+    signUploading.value = true
+    await signup(signUpForm.value)
+    message.success('注册成功')
+    signUpRef.value.resetFields()
+    document.getElementById('sign-in-btn')?.click()
+  } catch (error) {}
   signUploading.value = false
 }
 </script>

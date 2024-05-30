@@ -1,9 +1,9 @@
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-
 import App from './App.vue'
 import router from './router'
+import store from './stores'
 import antdv from 'ant-design-vue'
+import './permissions'
 import 'ant-design-vue/dist/reset.css'
 import '@/styles/base.scss'
 /* import the fontawesome core */
@@ -18,8 +18,9 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 library.add(fas, fab, far)
 /* add font awesome icon component */
 const app = createApp(App)
+
 app.component('font-awesome-icon', FontAwesomeIcon)
-app.use(createPinia())
+app.use(store)
 app.use(router)
 app.use(antdv)
 app.mount('#app')
